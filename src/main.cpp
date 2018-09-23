@@ -61,15 +61,23 @@ struct file
     }
     brackets find_bracket_one_with_position(int position)
     {
-        for (const auto &i : brackets_stack)
-            if (i.position_bracket_one == position)
-                return i;
+        for (size_t i = 0; i < brackets_stack.size(); i++)
+            if (brackets_stack[i].position_bracket_one == position)
+            {
+                std::swap(brackets_stack[0], brackets_stack[i]);
+                return brackets_stack[0];
+            }
+        throw 1;
     }
     brackets find_bracket_two_with_position(int position)
     {
-        for (const auto &i : brackets_stack)
-            if (i.position_bracket_two == position)
-                return i;
+        for (size_t i = 0; i < brackets_stack.size(); i++)
+            if (brackets_stack[i].position_bracket_two == position)
+            {
+                std::swap(brackets_stack[0], brackets_stack[i]);
+                return brackets_stack[0];
+            }
+        throw 1;
     }
     char move_to_other_bracket()
     {
@@ -158,10 +166,8 @@ std::vector<char> get_file_as_vector(std::string name)
     return tmp;
 }
 
-int main(int argc, char *argv[])
+inline void perform_operations(file _file, tape _tape)
 {
-    file _file(get_file_as_vector(std::string(argv[1])));
-    tape _tape(_file.file_vector.size());
     while (_file.read_position != _file.file_vector.size())
     {
         char operation = _file.get_current_instruction();
@@ -196,4 +202,11 @@ int main(int argc, char *argv[])
         }
         _file.increase_read_position();
     }
+}
+
+int main(int argc, char *argv[])
+{
+    file _file(get_file_as_vector(std::string(argv[1])));
+    tape _tape(_file.file_vector.size());
+    perform_operations(_file, _tape);
 }

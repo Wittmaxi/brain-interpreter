@@ -3,3 +3,5 @@ test_file.bf
 brainfuck
 .vscode/settings.json
 .vscode/tasks.json
+perf.data
+perf.data.old
